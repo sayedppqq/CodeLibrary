@@ -37,27 +37,17 @@ int cases=1;
 class KMP
 {
     public:
-    vii LPS_Table(string pat)
-    {
-        vii lps(pat.size());
-        int index=0;
-        for(int i=1;i<pat.size();)
-        {
-            if(pat[i]==pat[index])
-            {
-                lps[i]=index+1;
-                i++;
-                index++;
-            }
-            else
-            {
-                if(index!=0) index=lps[index-1];
-                else
-                {
-                    lps[i]=0;
-                    i++;
-                }
-            }
+    vector<int> prefix_function(string s) {
+        ///https://cp-algorithms.com/string/prefix-function.html#final-algorithm
+        int n = (int)s.length();
+        vector<int> lps(n);
+        for (int i = 1; i < n; i++) {
+            int j = lps[i-1];
+            while (j > 0 && s[i] != s[j])
+                j = lps[j-1];
+            if (s[i] == s[j])
+                j++;
+            lps[i] = j;
         }
         return lps;
     }
@@ -65,7 +55,7 @@ class KMP
     {
         ll cnt=0;
         vii lps;
-        lps=LPS_Table(pattern);
+        lps=prefix_function(pattern);
         int i=0,j=0;
         while(i<text.size())
         {
